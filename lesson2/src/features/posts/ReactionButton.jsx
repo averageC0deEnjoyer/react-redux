@@ -11,7 +11,7 @@ const ReactionButton = ({ post }) => {
     coffee: '💸',
   };
 
-  const emojiProcessed = Object.entries(post.reaction).map(([key, value]) => (
+  const emojiProcessed = Object.entries(post.reactions).map(([key, value]) => (
     <span key={key}>
       <span>{value}</span>
       <button
