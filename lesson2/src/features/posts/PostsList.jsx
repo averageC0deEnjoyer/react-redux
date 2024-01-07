@@ -31,7 +31,6 @@ const PostsList = () => {
       .slice()
       .sort((a, b) => b.date.localeCompare(a.date));
     //then we render
-    console.log(orderedPosts);
     content = orderedPosts.map((post) => (
       <PostExcerpt key={post.id} post={post} />
     ));
@@ -39,12 +38,7 @@ const PostsList = () => {
     content = <p>{error}</p>;
   }
 
-  return (
-    <section>
-      <h2>Posts</h2>
-      {content}
-    </section>
-  );
+  return <section>{content}</section>;
 };
 
 export default PostsList;
