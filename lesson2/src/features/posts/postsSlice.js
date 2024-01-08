@@ -1,4 +1,4 @@
-import { createSlice, nanoid, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { sub } from 'date-fns';
 import axios from 'axios';
 const POSTS_URL = 'https://jsonplaceholder.typicode.com/posts';
@@ -73,12 +73,13 @@ const postsSlice = createSlice({
   },
   extraReducers(builder) {
     builder
-      .addCase(fetchPosts.pending, (state, action) => {
+      .addCase(fetchPosts.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(fetchPosts.fulfilled, (state, action) => {
         state.status = 'succeeded';
         let min = 1;
+        //add date and reactions key to the fetchedPost
         const loadedPosts = action.payload.map((post) => {
           post.date = sub(new Date(), { minutes: min++ }).toISOString();
           post.reactions = {
@@ -90,6 +91,7 @@ const postsSlice = createSlice({
           };
           return post;
         });
+        //update global posts
         state.posts = [...loadedPosts];
       })
       .addCase(fetchPosts.rejected, (state, action) => {

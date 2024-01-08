@@ -5,9 +5,11 @@ import './index.css';
 import { store } from './app/store.js';
 import { Provider } from 'react-redux';
 import { fetchUsers } from './features/users/usersSlice.js';
+import { fetchPosts } from './features/posts/postsSlice.js';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 store.dispatch(fetchUsers());
+store.dispatch(fetchPosts());
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
