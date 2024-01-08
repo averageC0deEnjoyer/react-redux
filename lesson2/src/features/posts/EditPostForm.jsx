@@ -1,7 +1,7 @@
 //for local state
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectPostById, updatePost } from './postsSlice';
+import { selectPostById, updatePost, deletePost } from './postsSlice';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import { selectAllUsers } from '../users/usersSlice';
@@ -21,14 +21,6 @@ const EditPostForm = () => {
   const [requestStatus, setRequestStatus] = useState('idle');
 
   const dispatch = useDispatch();
-
-  if (!post) {
-    return (
-      <section>
-        <h2>No Post Found!</h2>;
-      </section>
-    );
-  }
 
   const onTitleChanged = (e) => setTitle(e.target.value);
   const onContentChanged = (e) => setContent(e.target.value);
@@ -71,6 +63,29 @@ const EditPostForm = () => {
     </option>
   ));
 
+  if (!post) {
+    return (
+      <section>
+        <h2>No Post Found!</h2>;
+      </section>
+    );
+  }
+
+  const onDeletePostClicked = () => {
+    try {
+      setRequestStatus('pending');
+      dispatch(deletePost({ id: post.id })).unwrap();
+      setTitle('');
+      setContent('');
+      setUserId('');
+      navigate('/');
+    } catch (err) {
+      console.error('Failed to delete the post', err);
+    } finally {
+      setRequestStatus('idle');
+    }
+  };
+
   return (
     <section>
       <h2>Edit Post</h2>
@@ -101,6 +116,9 @@ const EditPostForm = () => {
         />
         <button type="button" onClick={onSavePostClicked} disabled={!canSave}>
           Save Post
+        </button>
+        <button type="button" onClick={onDeletePostClicked}>
+          Delete Post
         </button>
       </form>
     </section>
